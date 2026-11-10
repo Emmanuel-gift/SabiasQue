@@ -1,0 +1,24 @@
+
+name: SabiasQue
+
+options:
+  deploymentTarget:
+    iOS: "13.0"
+
+targets:
+  SabiasQue:
+    type: application
+    platform: iOS
+
+    sources:
+      - path: SabiasQue
+        excludes:
+          - Info.plist
+
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.ejemplo.SabiasQue
+        INFOPLIST_FILE: SabiasQue/Info.plist
+        GENERATE_INFOPLIST_FILE: NO
+        TARGETED_DEVICE_FAMILY: "1,2"
+        IPHONEOS_DEPLOYMENT_TARGET: "13.0"
