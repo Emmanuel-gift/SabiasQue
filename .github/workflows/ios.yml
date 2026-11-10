@@ -9,13 +9,32 @@ jobs:
     runs-on: macos-latest
 
     steps:
-      - name: Descargar proyecto
+      - name: Descargar codigo
         uses: actions/checkout@v4
 
       - name: Verificar Xcode
         run: xcodebuild -version
 
-      - name: Preparar compilacion
+      - name: Instalar XcodeGen
+        run: brew install xcodegen
+
+      - name: Generar proyecto Xcode
+        run: xcodegen generate --spec project.yml
+
+      - name: Compilar aplicacion iOS
         run: |
-          echo "Entorno macOS preparado"
-          echo "Proyecto SabiasQue listo para integrar"
+          xcodebuild \
+            -project SabiasQue.xcodeproj \
+            -scheme SabiasQue \
+            -sdk iphonesimulator \
+            -configuration Debug \
+            -destination 'generic/platform=iOS Simulator' \
+            -derivedDataPath build \
+            build
+
+      - name: Guardar aplicacion compilada
+        uses: actions/upload-artifact@v4
+        with:
+          name: SabiasQue-iOS
+          path: build/Build/Products/Debug-iphonesimulator/SabiasQue.app
+
