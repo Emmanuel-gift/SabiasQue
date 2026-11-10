@@ -1,0 +1,21 @@
+
+name: Compilar SabiasQue para iOS
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-latest
+
+    steps:
+      - name: Descargar proyecto
+        uses: actions/checkout@v4
+
+      - name: Verificar Xcode
+        run: xcodebuild -version
+
+      - name: Preparar compilacion
+        run: |
+          echo "Entorno macOS preparado"
+          echo "Proyecto SabiasQue listo para integrar"
