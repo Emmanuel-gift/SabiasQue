@@ -32,7 +32,29 @@ jobs:
             -derivedDataPath build \
             build
 
-      - name: Guardar aplicacion compilada
+      - name: Guardar aplicacion compilada background: 
+      - name: Iniciar simulador de iPhone
+        run: |
+          DEVICE=$(xcrun simctl list devices available | grep -m 1 "iPhone" | sed -E 's/.*\(([-A-F0-9]+)\).*/\1/')
+          echo "DEVICE=$DEVICE" >> $GITHUB_ENV
+          xcrun simctl boot "$DEVICE"
+          xcrun simctl bootstatus "$DEVICE" -b
+
+      - name: Instalar y ejecutar aplicacion
+        run: |
+          xcrun simctl install "$DEVICE" build/Build/Products/Debug-iphonesimulator/SabiasQue.app
+          xcrun simctl launch "$DEVICE" com.ejemplo.SabiasQue
+
+      - name: Tomar captura de pantalla
+        run: |
+          sleep 5
+          xcrun simctl io "$DEVICE" screenshot pantalla-sabias-que.png
+
+      - name: Guardar captura
+        uses: actions/upload-artifact@v4
+        with:
+          name: Captura-SabiasQue
+          path: pantalla-sabias-que.png
         uses: actions/upload-artifact@v4
         with:
           name: SabiasQue-iOS
